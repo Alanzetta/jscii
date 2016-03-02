@@ -1,92 +1,126 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="utf-8">
-	<title>Jscii</title>
-	<script src="src/jscii.js"></script>
-	<style type="text/css">
-		html, body {
-			font: normal 12px/18px 'helvetica neue' arial;
-			color: #333;
-		}
-		.section > pre { font: bold 8px/5px monospace; color: #000; clear: left; }
-		video { width: 200px; }
-		.clearfix:after {
-			content: ".";
-			display: block;
-			clear: both;
-			visibility: hidden;
-			line-height: 0;
-			height: 0;
-		}
-		.clearfix { display: inline-block; }
-	</style>
-</head>
-<body>
-	<a href="https://github.com/EnotionZ/jscii"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a>
-	<div class="container">
-		<h2>Image to ASCII string</h2>
-		<div class="section clearfix">
-			<img width="150" id="jscii-element-image" src="test/image.jpg">
-			<pre id="ascii-container-image"></pre>
-		</div>
 
-		<h2>Webcam Feed to ASCII string <small>(must enable video)</small></h2>
-		<div class="section clearfix">
-			<video id="jscii-element-webrtc" controls autoplay>
-				Your browser does not support video
-			</video>
-			<div>
-				<button id="play-webrtc">Start Render</button>
-				<button id="pause-webrtc">Pause Render</button>
-			</div>
-			<pre id="ascii-container-webrtc"></pre>
-		</div>
-
-		<h2>Video to ASCII string</h2>
-		<div class="section clearfix">
-			<video id="jscii-element-video" width="150" height="112" controls loop>
-				<source src="test/movie.webm" type='video/webm; codecs="vp8, vorbis"' />
-				<source src="test/movie.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
-				<source src="test/movie.ogv" type='video/ogg; codecs="theora, vorbis"' />
-				Your browser does not support video
-			</video>
-			<div>
-				<button id="play-video">Start Render</button>
-				<button id="pause-video">Pause Render</button>
-			</div>
-			<pre id="ascii-container-video"></pre>
-		</div>
-	</div>
+  <head>
+	 
+	<script src="./scripts/jscii.js"></script>  
+	<title>JSCII</title>
+	<link href='https://fonts.googleapis.com/css?family=Titillium+Web' rel='stylesheet' type='text/css'>  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./stylesheet/ascii.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.8/clipboard.min.js"></script>
+	<script src="./scripts/ui.js"></script>
+	
 	<script>
-		// example using an image and callback to render ascii string
-		var imgJscii = new Jscii({
-			width: 200,
-			color: true,
-			el: document.getElementById('jscii-element-image'),
-			fn: function(str) {
-				document.getElementById('ascii-container-image').innerHTML = str;
-			}
-		});
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-		// example using webrtc media stream in video element
-		var webcamJscii = new Jscii({
-			container: document.getElementById('ascii-container-webrtc'),
-			el: document.getElementById('jscii-element-webrtc'),
-			webrtc: true
-		});
+  ga('create', 'UA-74247650-1', 'auto');
+  ga('send', 'pageview');
 
-		// example using normal video element
-		var videoJscii = new Jscii({
-			container: document.getElementById('ascii-container-video'),
-			el: document.getElementById('jscii-element-video')
-		});
+</script>
+  </head>
 
-		document.getElementById('play-webrtc').addEventListener('click', function() { webcamJscii.play(); });
-		document.getElementById('pause-webrtc').addEventListener('click', function() { webcamJscii.pause(); });
-		document.getElementById('play-video').addEventListener('click', function() { videoJscii.play(); });
-		document.getElementById('pause-video').addEventListener('click', function() { videoJscii.pause(); });
-	</script>
-</body>
+  <body ng-app="ascii" ng-controller="processor">
+	  <header class="head">
+		 <div style="display:inline-block;text-align:center;">
+			 
+			  <span style="float:left">Convert any image into text (ascii)</span>
+		  <p style="margin:0"> adapted from : <a href="https://github.com/EnotionZ/jscii" target="_self">jscii</a></p> 
+			 
+		  </div>
+		  
+	  </header>
+    
+    <div class="section">
+      
+      <div class="header">
+      </div>
+      
+      
+      <div class="shot">
+        
+			<div class="inputSection">
+				
+				<div id="dropArea" onclick="dropClick()" custom-on-change="process(currentFile)" drop-target="true">
+				   <p>Click to input image  (png/jpg only)</p>
+				   <input style="display:none" type="file" accept="image/*" ng-model="currentFile"
+						  custom-on-change="process(currentFile)" change="true"/>
+
+					<img id="original" class="inputImg" />
+
+					<div class="sizeHandler" ng-show="hasLoaded">
+
+						<div class="inline" >
+							<button class="resizeBtn basic-button" ng-click="$event.stopPropagation();resize(.5)" ng-checked="currentSize == .5">1/2</button>
+
+						</div>
+
+						<div class="inline">
+
+							<button class="resizeBtn basic-button" ng-click="$event.stopPropagation();resize(2)" ng-checked="currentSize == 2">2</button> 
+
+						</div>
+
+						<button ng-click="$event.stopPropagation();render();" class="render basic-button">render</button>
+
+
+					</div>
+
+
+
+				</div>
+
+				<div class="urlFetch" >
+					<p style="margin:3px 0"> or load from URL</p>
+
+					<input type="text" ng-model="imgURL" ng-click="$event.stopPropagation()"/>
+					<button ng-click="$event.stopPropagation();loadFromURL(imgURL);" class="accept basic-button">get image</button>
+				</div>
+			
+			
+		  </div>
+		  
+      </div>
+      
+    </div>
+    
+    
+    <div class="section">
+      
+      <div class="header">
+		  <i class="fa fa-arrow-down"></i> <span> Output</span>
+		  
+	   <button id="copy"  clippy data-clipboard-target="{{active == 'static'? '#out' : '#editor'}}" class="basic-button" ng-show="hasRendered"><i class="fa fa-clipboard"></i> copy</button>	
+		 
+		  <button  id="editBtn" class="basic-button" ng-show="hasRendered" ng-click="active == 'static'? active = 'editor' : active = 'static'"><i class="fa fa-paperclip"></i> {{active == 'static'? 'edit' : 'static'}}</button>
+		  
+      </div>
+      
+      
+      <div class="shot">
+        
+        <div style="display:inline-block">
+			
+			<pre id="out" ng-show="active =='static'" img-art>
+				
+			</pre>
+			
+			<textarea id="editor" ng-show="active =='editor'" ng-model="text">
+          				{{text}}
+        	</textarea>
+			
+			
+		</div>
+        
+      </div>
+      
+    </div>
+    
+    
+  </body>
+
 </html>
-

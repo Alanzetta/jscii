@@ -1,0 +1,138 @@
+/* Styles go here */
+
+html
+{
+  height:100%;
+}
+body
+{
+  height:100%;
+  margin:0;
+  background:#F3FFFE;
+}
+
+div,p,span,a,header
+{
+  box-sizing:border-box;
+  font-family: 'Titillium Web', sans-serif;
+}
+
+pre
+{
+font:bold 8px/5px monospace;
+clear:left;
+	white-space: pre;
+}
+
+.basic-button
+{
+	outline: none;
+	cursor: pointer;
+	border:0;
+}
+.section
+{
+  padding:20px 10px;
+  text-align:center;
+  margin-bottom:40px;
+}
+
+.header
+{
+  padding:10px 0;
+  text-align:center;
+}
+
+.shot
+{
+  
+}
+
+#dropArea
+{
+  
+  padding-top:20px;
+  cursor:pointer;
+  
+  text-align: center;
+}
+#out {
+	display: block;
+	color:#444;
+	background:white;
+}
+.inputImg
+{
+	margin-top: 15px;
+}
+#copy {
+	color:white;
+	background:cornflowerblue;
+	padding:3px 16px;
+	margin-left: 15px;
+}
+
+.inline {
+	display: inline-block;
+}
+
+.inputSection {
+	min-height:200px;
+  background:white;
+  border-radius:3px;
+  box-shadow:0 2px 4px #ddd;
+  display: inline-block;
+  min-width: 400px;
+	text-align: center;
+	position: relative;
+}
+
+.accept {
+	color:white;
+	background:cadetblue;
+	padding:3px 15px;
+}
+
+.urlFetch {
+	border-bottom-left-radius:8px;
+	border-bottom-right-radius:8px;
+	border-top:1px solid #ddd;
+	margin-top: 15px;
+	width:100%;
+	text-align: center;
+	padding:15px 0;
+
+	
+}
+
+.render {
+	color:white;
+	background:seagreen;
+	padding:3px 16px;
+}
+
+.resizeBtn {
+	box-shadow: 0 2px 4px #ddd;
+	background:white;
+	padding:3px 8px;
+	color:#444;
+}
+
+.head {
+	width:100%;
+	text-align: center;
+	background:rgba(97, 97, 97, 0.4);
+	color:white;
+	padding: 10px;
+}
+
+#editBtn {
+	background:gold;
+	color:white;
+	padding:3px 15px;
+}
+
+#editor {
+	min-height: 300px;
+	min-width: 300px;
+}
